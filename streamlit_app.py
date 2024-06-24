@@ -67,6 +67,8 @@ if detailed_stats_choice == 'Yes':
     st.write("Select a Pokemon to compare stats with: ")
 
 # function to create list of all the pokemon names
+# cached so it doesnt have to run everytime
+    @st.cache_data
     def fetch_pokemon_names():
         all_pokemon_names = []
         for pokedex_number in range(1, 156):
@@ -100,7 +102,6 @@ if detailed_stats_choice == 'Yes':
 
         st.write(f"You have chosen to compare {name} with {selected_comparison_pokemon}.")
 
-    
 
 
 # comparing the initial pokemon with the comparison pokemon
