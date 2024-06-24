@@ -99,7 +99,7 @@ if detailed_stats_choice == 'Yes':
         speed_2 = pokemon_selected['stats'][5]['base_stat']
 
 
-        st.write(f"You have chosen to compare {name} with {selected_comparison_pokemon}.")
+        st.write(f"You have chosen to compare {name.capitalize()} with {selected_comparison_pokemon}.")
 
 
 
