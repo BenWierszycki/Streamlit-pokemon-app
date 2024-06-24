@@ -25,10 +25,6 @@ speed = pokemon['stats'][5]['base_stat']
 image = pokemon['sprites']['front_default']
 cry = pokemon['cries']['latest']
 
-
-
-pokedex = pd.DataFrame(columns = ['name', 'height', 'abilities', 'move_count'])
-
 st.write('You have selected........')
 
 col1, col2 = st.columns(2)
@@ -43,10 +39,17 @@ with height_col:
 with weight_col:
     st.metric(label="Weight", value=f"{weight/10} kg")
 
-st.write(f"This is what {name} sounds like:")
+st.write(f"{name.capitalize()}'s cry:")
 st.audio(cry)
 
 detailed_stats_choice = st.radio("Do you want detailed stats?", options = ['Yes', 'No'])
+
+if detailed_stats_choice == 'Yes':
+    detailed_stats = {'Stat': ['HP', 'Attack', 'Defense', 'Special Attack', 'Special Defense', 'Speed'],
+                      'Value' : [hp, attack, defense, special_attack, special_defense, speed] }
+    detailed_stats_df = pd.DataFrame(detailed_stats)
+    st.write("Detailed Stats:")
+    st.dataframe(detailed_stats_df)
 
 
 
