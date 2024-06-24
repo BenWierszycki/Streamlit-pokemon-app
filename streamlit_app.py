@@ -62,46 +62,47 @@ if detailed_stats_choice == 'Yes':
 
 
 ## selecting two pokemon and compare their stats
-st.subheader('Stats comparison')
+if detailed_stats_choice == 'Yes':
+    st.subheader('Stats comparison')
 
-st.write("Select a Pokemon to compare stats with: ")
+    st.write("Select a Pokemon to compare stats with: ")
 
 # function to create list of all the pokemon names
-def fetch_pokemon_names():
-    all_pokemon_names = []
-    for pokedex_number in range(1, 156):
-        url = f'https://pokeapi.co/api/v2/pokemon/{pokedex_number}/'
-        response_2 = requests.get(url)
-        pokemon_2 = response_2.json()
-        poke_name = pokemon_2['name'].capitalize()
-        all_pokemon_names.append(poke_name)
-    all_pokemon_names.sort()
-    return all_pokemon_names
+    def fetch_pokemon_names():
+        all_pokemon_names = []
+        for pokedex_number in range(1, 156):
+            url = f'https://pokeapi.co/api/v2/pokemon/{pokedex_number}/'
+            response_2 = requests.get(url)
+            pokemon_2 = response_2.json()
+            poke_name = pokemon_2['name'].capitalize()
+            all_pokemon_names.append(poke_name)
+        all_pokemon_names.sort()
+        return all_pokemon_names
 
-all_pokemon_names = fetch_pokemon_names()
+    all_pokemon_names = fetch_pokemon_names()
 
 #creating a dropdown of all the names
-selected_comparison_pokemon = st.multiselect('Select Pokemon', all_pokemon_names, [])
+    selected_comparison_pokemon = st.multiselect('Select Pokemon', all_pokemon_names, [])
 
-if selected_comparison_pokemon:
-    comparison_names_str = ', '.join(selected_comparison_pokemon)
-    st.write(f"You have chosen to compare {name} with {comparison_names_str}.")
+    if selected_comparison_pokemon:
+        comparison_names_str = ', '.join(selected_comparison_pokemon)
+        st.write(f"You have chosen to compare {name} with {comparison_names_str}.")
 
 
 # I have been trying to work out how to get the stats comparions working but haven't managed to get it working yet!
 # i havent worked out how to use the name of the selected pokemon to get the stats of it to compare to the intially selected one
 # so for now it is just another illustration of the stats unfortunately
 
-stats_col1, stats_col2, stats_col3 = st.columns(3)
-with stats_col1:
-    st.metric(label="HP", value= f"{hp}", delta="")
-    st.metric(label="Speed", value= f"{speed}", delta="")
-with stats_col2:
-    st.metric(label="Attack", value= f"{attack}", delta="")
-    st.metric(label="Special Attack", value= f"{special_attack}", delta="")
-with stats_col3:
-    st.metric(label="Defense", value=f"{defense}", delta="")
-    st.metric(label="Special Defense", value= f"{special_defense}", delta="")
+    stats_col1, stats_col2, stats_col3 = st.columns(3)
+    with stats_col1:
+        st.metric(label="HP", value= f"{hp}", delta="")
+        st.metric(label="Speed", value= f"{speed}", delta="")
+    with stats_col2:
+        st.metric(label="Attack", value= f"{attack}", delta="")
+        st.metric(label="Special Attack", value= f"{special_attack}", delta="")
+    with stats_col3:
+        st.metric(label="Defense", value=f"{defense}", delta="")
+        st.metric(label="Special Defense", value= f"{special_defense}", delta="")
 
 
 
