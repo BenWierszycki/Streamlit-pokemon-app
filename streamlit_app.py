@@ -1,5 +1,4 @@
 # import packages 
-
 import requests
 import streamlit as st
 import pandas as pd
@@ -82,27 +81,41 @@ if detailed_stats_choice == 'Yes':
     all_pokemon_names = fetch_pokemon_names()
 
 #creating a dropdown of all the names
-    selected_comparison_pokemon = st.multiselect('Select Pokemon', all_pokemon_names, [])
+    selected_comparison_pokemon = st.selectbox('Select Pokemon', all_pokemon_names)
 
+# Fetch the details of the selected Pokemon
     if selected_comparison_pokemon:
-        comparison_names_str = ', '.join(selected_comparison_pokemon)
-        st.write(f"You have chosen to compare {name} with {comparison_names_str}.")
+        url_selected = f'https://pokeapi.co/api/v2/pokemon/{selected_comparison_pokemon.lower()}/'
+        response_selected = requests.get(url_selected)
+        pokemon_selected = response_selected.json()
+
+# Extract stats of the selected Pokemon
+        hp_2 = pokemon_selected['stats'][0]['base_stat']
+        attack_2 = pokemon_selected['stats'][1]['base_stat']
+        defense_2 = pokemon_selected['stats'][2]['base_stat']
+        special_attack_2 = pokemon_selected['stats'][3]['base_stat']
+        special_defense_2 = pokemon_selected['stats'][4]['base_stat']
+        speed_2 = pokemon_selected['stats'][5]['base_stat']
 
 
-# I have been trying to work out how to get the stats comparions working but haven't managed to get it working yet!
-# i havent worked out how to use the name of the selected pokemon to get the stats of it to compare to the intially selected one
-# so for now it is just another illustration of the stats unfortunately
+        st.write(f"You have chosen to compare {name} with {selected_comparison_pokemon}.")
+
+    
+
+
+# comparing the initial pokemon with the comparison pokemon
 
     stats_col1, stats_col2, stats_col3 = st.columns(3)
     with stats_col1:
-        st.metric(label="HP", value= f"{hp}", delta="")
-        st.metric(label="Speed", value= f"{speed}", delta="")
+        st.metric(label="HP", value= f"{hp}", delta=f"{hp - hp_2}")
+        st.metric(label="Speed", value= f"{speed}", delta=f"{speed - speed_2}")
     with stats_col2:
-        st.metric(label="Attack", value= f"{attack}", delta="")
-        st.metric(label="Special Attack", value= f"{special_attack}", delta="")
+        st.metric(label="Attack", value= f"{attack}", delta=f"{attack - attack_2}")
+        st.metric(label="Special Attack", value= f"{special_attack}", delta=f"{special_attack - special_attack_2}")
     with stats_col3:
-        st.metric(label="Defense", value=f"{defense}", delta="")
-        st.metric(label="Special Defense", value= f"{special_defense}", delta="")
+        st.metric(label="Defense", value=f"{defense}", delta=f"{defense - defense_2}")
+        st.metric(label="Special Defense", value= f"{special_defense}", delta=f"{special_defense - special_defense_2}")
+
 
 
 
