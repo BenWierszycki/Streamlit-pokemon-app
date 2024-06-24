@@ -50,6 +50,3 @@ if detailed_stats_choice == 'Yes':
     detailed_stats_df = pd.DataFrame(detailed_stats)
     st.write("Detailed Stats:")
     st.dataframe(detailed_stats_df)
-
-
-
