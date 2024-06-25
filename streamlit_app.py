@@ -6,9 +6,25 @@ import pandas as pd
 #title
 st.title("Pokemon Explorer")
 
+# function to create list of all the pokemon names
+# cached so it doesnt have to run everytime
+@st.cache_data
+def fetch_pokemon_names():
+    all_pokemon_names = []
+    for pokedex_number in range(1, 156):
+        url = f'https://pokeapi.co/api/v2/pokemon/{pokedex_number}/'
+        response_2 = requests.get(url)
+        pokemon_2 = response_2.json()
+        poke_name = pokemon_2['name'].capitalize()
+        all_pokemon_names.append(poke_name)
+    all_pokemon_names.sort()
+    return all_pokemon_names
+
+all_pokemon_names = fetch_pokemon_names()
+
 # choosing pokemon slider
-pokemon_number = st.slider("Choose a pokemon!", 1, 155)
-url = f'https://pokeapi.co/api/v2/pokemon/{pokemon_number}/'
+main_selected_pokemon = st.selectbox('Select Pokemon', all_pokemon_names)
+url = f'https://pokeapi.co/api/v2/pokemon/{main_selected_pokemon.lower()}/'
 response = requests.get(url)
 pokemon = response.json()
 
@@ -65,24 +81,8 @@ if detailed_stats_choice == 'Yes':
 
     st.write("Select a Pokemon to compare stats with: ")
 
-# function to create list of all the pokemon names
-# cached so it doesnt have to run everytime
-    @st.cache_data
-    def fetch_pokemon_names():
-        all_pokemon_names = []
-        for pokedex_number in range(1, 156):
-            url = f'https://pokeapi.co/api/v2/pokemon/{pokedex_number}/'
-            response_2 = requests.get(url)
-            pokemon_2 = response_2.json()
-            poke_name = pokemon_2['name'].capitalize()
-            all_pokemon_names.append(poke_name)
-        all_pokemon_names.sort()
-        return all_pokemon_names
-
-    all_pokemon_names = fetch_pokemon_names()
-
 #creating a dropdown of all the names
-    selected_comparison_pokemon = st.selectbox('Select Pokemon', all_pokemon_names)
+    selected_comparison_pokemon = st.selectbox('Select Comparison Pokemon', all_pokemon_names)
 
 # Fetch the details of the selected Pokemon
     if selected_comparison_pokemon:
@@ -115,7 +115,3 @@ if detailed_stats_choice == 'Yes':
     with stats_col3:
         st.metric(label="Defense", value=f"{defense}", delta=f"{defense - defense_2}")
         st.metric(label="Special Defense", value= f"{special_defense}", delta=f"{special_defense - special_defense_2}")
-
-
-
-
